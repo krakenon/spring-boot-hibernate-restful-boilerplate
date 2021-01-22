@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  mysql_db:
+    image: mysql:5.7
+    container_name: ${MYSQL_CONTAINER_NAME_PREFIX}5.7
+    ports:
+      - 3306:3306
+    volumes:
+      - ./databases/conf.d:/etc/mysql/conf.d:ro
+      - ./databases/initdb.d:/docker-entrypoint-initdb.d:ro
+      - mysql_data:/var/lib/mysql:rw
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - TZ=${TIMEZONE}
+    restart: always
+    networks:
+      - fa_backend
+      
+networks:
+  fa_backend:
+volumes:
+  mysql_data:
